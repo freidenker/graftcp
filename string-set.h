@@ -29,6 +29,7 @@ void str_set_put(struct str_set *set, const char *elem);
 char *str_set_remove(struct str_set *set, const char *elem);
 int str_set_length(struct str_set *set);
 int is_str_set_member(struct str_set *set, const void *elem);
+void show_elements(struct str_set *set);
 void str_set_free(struct str_set **set);
 
 #endif

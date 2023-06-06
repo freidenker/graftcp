@@ -77,6 +77,7 @@ static bool is_ignore(const char *ip)
 {
 	if (BLACKLIST_IP) {
 		if (is_str_set_member(BLACKLIST_IP, ip))
+			show_elements(BLACKLIST_IP)
 			return true;
 	}
 	if (WHITELACKLIST_IP) {

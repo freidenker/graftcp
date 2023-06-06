@@ -77,6 +77,20 @@ void str_set_put(struct str_set *set, const char *elem)
 	}
 }
 
+void show_elements(struct str_set *set)
+{
+	// int i;
+	int len;
+	struct member *p;
+
+	assert(set);
+	len = set->size;
+	for (int i = 0; p = set->buckets[i]; i < len, i++) {
+		printf("blackip: %s", p->element);
+	}
+	return;
+}
+
 char *str_set_remove(struct str_set *set, const char *elem)
 {
 	int i;
