@@ -77,19 +77,19 @@ void str_set_put(struct str_set *set, const char *elem)
 	}
 }
 
-void show_elements(struct str_set *set)
-{
-	// int i;
-	int len;
-	struct member *p;
+// void show_elements(struct str_set *set)
+// {
+// 	// int i;
+// 	int len;
+// 	struct member *p;
 
-	assert(set);
-	len = set->size;
-	for (int i = 0; p = set->buckets[i]; i < len, i++) {
-		printf("blackip: %s", p->element);
-	}
-	return;
-}
+// 	assert(set);
+// 	len = set->size;
+// 	for (int i = 0; p = set->buckets[i]; i < len, i++) {
+// 		printf("blackip: %s", p->element);
+// 	}
+// 	return;
+// }
 
 char *str_set_remove(struct str_set *set, const char *elem)
 {
@@ -120,18 +120,48 @@ int str_set_length(struct str_set *set)
 
 int is_str_set_member(struct str_set *set, const void *elem)
 {
-	int i;
-	struct member *p;
+ int i;
+ struct member *p;
+ char *ip = (char *)elem;
+ char *ip1, *ip2;
+ int ip1_int, ip2_int;
+ int ip_int;
 
-	assert(set);
-	assert(elem);
-	i = str_hash(elem) % set->size;
-	for (p = set->buckets[i]; p; p = p->link) {
-		if (strcmp(elem, p->element) == 0)
-			break;
-	}
-	return p != NULL;
+ assert(set);
+ assert(elem);
+ i = str_hash(elem) % set->size;
+ for (p = set->buckets[i]; p; p = p->link) {
+  ip1 = strtok(p->element, "/");
+  ip2 = strtok(NULL, "/");
+  if (ip2 == NULL) {
+   ip2 = "32";
+  }
+  ip1_int = atoi(ip1);
+  ip2_int = atoi(ip2);
+  ip_int = atoi(ip);
+  if (ip1_int == ip_int) {
+   return 1;
+  } else if (ip1_int < ip_int && ip_int < ip1_int + (1 << (32 - ip2_int))) {
+   return 1;
+  }
+ }
+ return 0;
 }
+// {
+// 	int i;
+// 	struct member *p;
+
+// 	assert(set);
+// 	assert(elem);
+// 	i = str_hash(elem) % set->size;
+// 	for (p = set->buckets[i]; p; p = p->link) {
+// 		if (strcmp(elem, p->element) == 0)
+// 			break;
+// 	}
+// 	return p != NULL;
+// }
+
+
 
 void str_set_free(struct str_set **set)
 {
